@@ -1,0 +1,15 @@
+.footer-img {
+  background: url('../../assets/footer.jpg');
+  font-weight: 200;
+}
+
+.Footer {
+  font-size: 15px;
+  color: #fff;
+  line-height: 20px;
+}
+
+.footer-nav {
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5)
+}

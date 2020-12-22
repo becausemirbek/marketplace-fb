@@ -1,0 +1,8 @@
+.bread-crumps__title {
+  cursor: pointer !important;
+}
+
+.bread-crumps__title:hover {
+  text-decoration: underline;
+  color: #808080;
+}

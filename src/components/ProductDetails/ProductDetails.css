@@ -1,0 +1,117 @@
+
+.img-container {
+  overflow: hidden;
+  position: relative;
+}
+.img-container>img{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.custom-pipi-carousel .img-container{
+  height: 100px;
+  width: 180px;
+  margin: 0 auto;
+  border-radius: 5px;
+  border: 1px solid black;
+  cursor: pointer;
+}
+.img-container.product-preview{
+  height: 500px;
+}
+
+.carousel-menu-photo > img {
+  width: 100%;
+}
+
+.contact-seller {
+  font-size: 13px;
+  font-weight: normal;
+  font-family: Montserrat;
+}
+
+.phone-number {
+  padding: .5rem 1.5rem;
+  margin-bottom: 5rem;
+}
+
+.product-details {
+  max-width: 75%;
+}
+
+.category-details {
+  max-width: 70%;
+}
+
+.category-details > p {
+  margin: 0;
+}
+.category-details > h3, .description-title, .location-title {
+  font-size: 16px;
+  color: #808080;
+  font-family: Montserrat;
+  font-weight: 300;
+}
+
+.social-title {
+  font-size: 14px;
+  color: #808080;
+  font-weight: normal;
+  font-family: Montserrat;
+}
+
+.product-item__description, .metro {
+  font-family: Montserrat;
+  font-weight: normal;
+  font-size: 20px;
+  color: #333;
+}
+
+.category-ads, .sub-category-ads, .publish-date{
+  font-family: Montserrat;
+  font-size: 16px;
+  color: #333;
+  font-weight: normal;
+}
+
+.social-icons {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.google {
+  background-color: #DC4E41;
+}
+
+.facebook {
+  background-color: #067BBC;
+}
+
+.vk {
+  background-color: #4B729F;
+}
+
+.banner-ad {
+  height: 400px;
+  width: 220px;
+  overflow: hidden;
+  position: relative;
+}
+
+.banner-ad.mob{
+  height: 400px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.banner-ad > img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 4px;
+}

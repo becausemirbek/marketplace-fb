@@ -1,0 +1,30 @@
+.ads-details > p , .sale-status{
+  padding: 0;
+  margin: 0;
+  color: #333;
+  font-weight: 300;
+  font-size: 16px;
+}
+
+.ads-details > p > span {
+  cursor: pointer;
+}
+
+.user-name {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.user-id {
+  font-size: 12px;
+  font-weight: 300;
+  color: #808080;
+}
+
+.sale-status {
+  color: #808080;
+}
+
+.profile-page {
+  margin-bottom: 10rem;
+}

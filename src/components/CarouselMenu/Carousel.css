@@ -1,0 +1,80 @@
+.custom-pipi-carousel .prevButton{
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  color: #009E7F;
+  padding: 0;
+  border-radius: 20px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  left: 40px;
+  margin-top: -20px;
+  z-index: 99;
+}
+
+.custom-pipi-carousel .nextButton{
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  color: #009E7F;
+  padding: 0;
+  border-radius: 20px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  right: 40px;
+  margin-top: -20px;
+  z-index: 99;
+}
+
+
+.categoryList {
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.fontStyle {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+
+}
+
+.purple {
+  background: #6066B7;
+}
+
+.burgundy {
+  background: #98315F;
+}
+
+.green {
+  background: #00AD5D;
+}
+
+.yellow {
+  background: #FFA628;;
+}
+
+.burgundy2 {
+  background: #914E4E;
+}
+
+.persianGreen {
+  background: #00A888;
+}

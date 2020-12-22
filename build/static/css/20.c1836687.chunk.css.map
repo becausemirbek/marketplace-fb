@@ -1,0 +1,1 @@
+{"version":3,"sources":["FilterForm.css"],"names":[],"mappings":"AAAA,YACE,eAAgB,CAChB,iBACF,CACA,eACE,YAAa,CACb,cAAe,CACf,aACF,CAEA,YACE,cACF","file":"20.c1836687.chunk.css","sourcesContent":[".submit-btn {\n  margin-top: 2rem;\n  margin-left: 10rem;\n}\n.increment-inp {\n  width: 3.5rem;\n  font-size: 12px;\n  padding: 0.5rem;\n}\n\n.btn-submit {\n  font-size: 14px;\n}\n"]}

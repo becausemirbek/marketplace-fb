@@ -1,0 +1,1 @@
+export const API_URL = "https://kaeda-test-default-rtdb.firebaseio.com";

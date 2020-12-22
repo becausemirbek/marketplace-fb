@@ -1,0 +1,14 @@
+.metro-title {
+  font-size: 14px;
+  color: #808080;
+  cursor: pointer;
+}
+
+.metro-title:hover {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+.metro-elems {
+  font-size: 14px;
+}

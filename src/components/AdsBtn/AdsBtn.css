@@ -1,0 +1,14 @@
+.adBtn {
+  width: 100%;
+  max-width: 15rem;
+  height: 40px;
+  position: fixed;
+  bottom: 10px;
+  transform: translate(-50%, -50%);
+  border-radius: 100px;
+  font-size: 14px;
+  border: none;
+  color: white;
+
+  padding: 8px 26px;
+}

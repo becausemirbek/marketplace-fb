@@ -1,0 +1,18 @@
+.user-description > h3 {
+  font-size: 16px;
+  color: #808080;
+}
+
+.resume-avatar {
+  max-width: 40rem;
+  /* overflow: hidden;
+  position: relative; */
+}
+
+/* .user-avatar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 3px;
+} */
