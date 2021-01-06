@@ -27,6 +27,7 @@ const EditPage = lazy(() => import("../pages/EditPage"));
 const Resume = lazy(() => import("../pages/ResumeList"));
 const ResumeDetails = lazy(() => import("../pages/ResumeDetails"));
 const ResumeCreate = lazy(() => import("../pages/Resume"));
+const Favorites = lazy(() => import('../pages/Favorites'))
 
 // handle auth and authorization
 const PrivateRoute = ({ component: Component, roles, ...rest }) => (
@@ -207,6 +208,13 @@ const resumeCreate = {
   route: PrivateRoute,
 };
 
+const favorites = {
+  name: "favorites",
+  path: "/favorites",
+  component: Favorites,
+  route: PrivateRoute
+}
+
 const error404Route = {
   name: "Error 404",
   component: () => <h1>Error 404</h1>,
@@ -247,6 +255,7 @@ const allRoutes = [
   resume,
   resumeDetails,
   resumeCreate,
+  favorites
 ];
 
 // Insert Error404 page

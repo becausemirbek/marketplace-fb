@@ -4,6 +4,7 @@ import Routes from "./routes/Routes";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getLoggedInUser } from "./helpers/authUtils";
+import { FavoritesContextProvider } from "./contexts/favoritesContext";
 
 function App() {
   useEffect(() => {
@@ -11,7 +12,9 @@ function App() {
   }, []);
   return (
     <div id="app">
-      <Routes />
+      <FavoritesContextProvider>
+        <Routes />
+      </FavoritesContextProvider>
     </div>
   );
 }

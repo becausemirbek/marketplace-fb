@@ -40,12 +40,6 @@ class ProductPage extends Component {
     if (this.props.id !== prev.id) {
       this.fetchData();
     }
-    // if (
-    //   (!this.state.currentImg && this.props.ads?.images) ||
-    //   this.props.ads?.images !== prev.ads?.images
-    // ) {
-    //   this.setImg();
-    // }
   }
 
   render() {
@@ -65,7 +59,6 @@ class ProductPage extends Component {
     return (
         this.props.ads ? (
           <>
-          {console.log(this.props.ads)}
             <Breadcrumbs items={breadCrumbsItems} />
             <Container className="px-0">
               <Card className="mb-5 p-2 d-none d-lg-flex">

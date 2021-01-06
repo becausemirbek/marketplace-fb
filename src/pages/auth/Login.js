@@ -19,14 +19,13 @@ class Login extends Component {
 
     try {
       const { data } = await Axios.post(
-        `${API_URL}/auth/rest-auth/login/`,
+        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCVONmsfMZcL0W3YFQ_mJAWCbr1Dv1qaaM`,
         values
       );
-      cookie.set("user", JSON.stringify({ token: data.key }));
+      cookie.set("user", JSON.stringify({ token: data.idToken }));
       this.props.history.push("/");
     } catch (e) {
-      // console.warn("API_ERR", e.response.data);
-      this.setState({ err: e.response });
+      this.setState({ err: {...e} });
     }
   };
   render() {
@@ -48,9 +47,9 @@ class Login extends Component {
                     <h4>{this.state?.err?.data?.non_field_errors}</h4>
                   )} */}
                   {this.state?.err &&
-                    this.state?.err?.data?.non_field_errors && (
+                    this.state?.err?.response.data?.error && (
                       <Alert color="danger">
-                        {this.state?.err?.data?.non_field_errors}
+                        {this.state.err.response.data.error.message}
                       </Alert>
                     )}
                   <AvForm onValidSubmit={this.handleValidSubmit}>

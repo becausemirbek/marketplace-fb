@@ -6,7 +6,7 @@ import {
   DropdownItem,
 } from "reactstrap";
 // import UncontrolledDropdown from 'reactstrap/lib/UncontrolledDropdown';
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import Row from "reactstrap/lib/Row";
 import IconUser from "../../assets/icons/-1_2_1 1.webp";
@@ -22,14 +22,16 @@ const ProfileDropdown = () => {
       <div className="d-none d-lg-flex">
         <Row className="mr-1">
           <div className="mt-2 mr-1">
-            <img
-              className="mr-2"
-              src={Favorites}
-              alt="favoritesIcon"
-              width="15rem"
-              height="15rem"
-              style={{ cursor: "pointer" }}
-            />
+            <Link to="/favorites">
+              <img
+                className="mr-2"
+                src={Favorites}
+                alt="favoritesIcon"
+                width="15rem"
+                height="15rem"
+                style={{ cursor: "pointer" }}
+              />
+            </Link>
           </div>
           <img
             onClick={() => history.push("/my-profile")}
@@ -83,14 +85,16 @@ const ProfileMobile = () => {
   return (
     <div className="d-flex d-lg-none">
       <div className="mt-2 mr-1">
-        <img
-          className="mr-2"
-          src={Favorites}
-          alt="favoritesIcon"
-          width="15rem"
-          height="15rem"
-          style={{ cursor: "pointer" }}
-        />
+        <Link to="/favorites">
+          <img
+            className="mr-2"
+            src={Favorites}
+            alt="favoritesIcon"
+            width="15rem"
+            height="15rem"
+            style={{ cursor: "pointer" }}
+          />
+        </Link>
       </div>
       <Dropdown isOpen={dropdownOpen} toggle={toggle}>
         <DropdownToggle tag="a" className="nav-link h6 p-0">

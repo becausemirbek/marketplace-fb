@@ -11,7 +11,7 @@ import qs from "qs";
 
 // Функция принимает item, создает child
 const convertCatToOpt = (data) =>
-  data.map((item) => ({
+  data && data.map((item) => ({
     label: item.title,
     value: item.title,
     children: convertCatToOpt(item.children),
@@ -24,6 +24,7 @@ class CategoryDropdown extends Component {
   componentDidMount() {
     this.props.getCategory();
   }
+
   handleSetCategory = (id) => {
     const query = qs.parse(this.props.history.location.search.replace("?", ""));
     query.category = id.length > 1 ? id[id.length - 1] : id[0];
@@ -31,7 +32,7 @@ class CategoryDropdown extends Component {
   };
 
   render() {
-    const options = convertCatToOpt(this.props.data);
+    const options = convertCatToOpt(this.props.data && this.props.data);
     return (
       <Cascader onChange={this.handleSetCategory} options={options}>
         <Button className="mb-3" style={{ boxShadow: "none" }} color="info">

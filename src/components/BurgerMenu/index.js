@@ -16,7 +16,6 @@ const BurgerMenu = (props) => {
         <DropdownItem className="mt-3" style={{fontSize:'.8rem', fontWeight: '200'}}>Объявления</DropdownItem>
         <DropdownItem style={{fontSize:'.8rem', fontWeight: '200'}}>Реклама на сайте</DropdownItem>
         <DropdownItem style={{fontSize:'.8rem', fontWeight: '200'}}>Выбрать регион</DropdownItem>
-        <DropdownItem className="mb-3" style={{fontSize:'.8rem', fontWeight: '200'}}>Выбрать метро</DropdownItem>
       </DropdownMenu>
     </ButtonDropdown>
   );

@@ -12,7 +12,6 @@ import { connect } from "react-redux";
 import {
   createPost,
   getCategory,
-  getMetro,
   getCity,
 } from "../../redux/actions";
 
@@ -31,12 +30,12 @@ import {
 } from "reactstrap";
 import CityDropdown from "../CityDrop";
 import "./PostForm.css";
+import { getLoggedInUser } from "../../helpers/authUtils";
 // import AvField from "availity-reactstrap-validation/lib/AvField";
 
 class PostForm extends Component {
   componentDidMount() {
     this.props.getCity();
-    this.props.getMetro();
     this.props.getCategory();
   }
   constructor(props) {
@@ -48,7 +47,6 @@ class PostForm extends Component {
     this.state = {
       pass_images: [],
       category: null,
-      metro: null,
       city: null,
     };
   }
@@ -65,23 +63,9 @@ class PostForm extends Component {
   };
 
   handleValidSubmit = (event, values) => {
-    delete values.pass_images;
-    let formData = new FormData();
-    this.state.pass_images.forEach((item, id) => {
-      formData.append("image" + id, item);
-    });
-    console.log(this.state.pass_images);
-    for (const key in values) {
-      formData.append(key, values[key]);
-    }
-    if (this.state.category)
-      formData.append("category", this.state.category.id);
-    formData.append("metro", this.state.metro);
-    formData.append("city", this.state.city);
-    // for (var key of formData.keys()) {
-    // }
-    this.props.createPost(formData);
-    this.props.history.push("/post-create-success");
+    const {token} = getLoggedInUser()
+    const val = {...values, category: this.state.category.title, id: Date.now(), city: this.state.city, user: token }
+    this.props.createPost(val);
   };
 
   dragOverHandler(ev) {
@@ -111,12 +95,12 @@ class PostForm extends Component {
 
   render() {
     const convertCatToOpt = (data) =>
-      data.map((item) => ({
+      data && data.map((item) => ({
         label: item.title,
         value: item,
         children: convertCatToOpt(item.children),
       }));
-    const options = convertCatToOpt(this.props.data);
+    const options = convertCatToOpt(this.props.data && this.props.data);
     return (
       <Container>
         <Row className="mb-5 mx-0 col-6">
@@ -158,23 +142,34 @@ class PostForm extends Component {
             <CityDropdown
               cityTitle={this.state.city}
               city={this.props.city}
-              onClick={(id) => this.setState({ city: id })}
-              history={this.props.history}
-            />
-            <MetroDropdown
-              className="mt-5"
-              metroTitle={this.state.metro}
-              onClick={(id) => this.setState({ metro: id })}
-              metro={this.props.metro}
+              onClick={(id) => this.setState({city: this.props?.city?.[id].title})}
               history={this.props.history}
             />
             <AvGroup>
               <Label for="phone_number">Номер Телефона</Label>
               <AvInput
-                name="phone_number"
-                type="number"
+                name="phoneNumber"
+                type="text"
                 id="phone_number"
                 placeholder="Номер телефона"
+              />
+            </AvGroup>
+            <AvGroup>
+              <Label for="phone_number">Ссылка фотографии</Label>
+              <AvInput
+                name="image1"
+                type="text"
+                id="phone_number"
+                placeholder="Добавьте ссылку фотографии"
+              />
+            </AvGroup>
+            <AvGroup>
+              <Label for="phone_number">Ссылка фотографии</Label>
+              <AvInput
+                name="image2"
+                type="text"
+                id="phone_number"
+                placeholder="Добавьте ссылко фотографии"
               />
             </AvGroup>
             <AvGroup>
@@ -241,63 +236,13 @@ class PostForm extends Component {
   }
 }
 
-const MetroDropdown = ({ metro, onClick, metroTitle }) => {
-  const handleSetMetro = (id) => {
-    onClick(id);
-  };
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const toggle = () => setDropdownOpen((prevState) => !prevState);
-  return (
-    <Dropdown className="mb-3" isOpen={dropdownOpen} toggle={toggle}>
-      <DropdownToggle tag="a" caret>
-        <span>{metroTitle || "Выбрать метро"}</span>
-      </DropdownToggle>
-      <DropdownMenu
-        modifiers={{
-          setMaxHeight: {
-            enabled: true,
-            order: 890,
-            fn: (data) => {
-              return {
-                ...data,
-                styles: {
-                  ...data.styles,
-                  overflow: "auto",
-                  maxHeight: "100px",
-                },
-              };
-            },
-          },
-        }}
-      >
-        {metro ? (
-          metro.map((item) => (
-            <DropdownItem
-              className="metro-item"
-              onClick={() => {
-                handleSetMetro(item.id);
-              }}
-              key={item.id}
-            >
-              {item.title}
-            </DropdownItem>
-          ))
-        ) : (
-          <span style={{ fontSize: "15px" }}>"Что то пошло не так"</span>
-        )}
-      </DropdownMenu>
-    </Dropdown>
-  );
-};
-
 const mapStateToProps = (state) => {
-  const { loading, error, data, metro, city } = state.Category;
-  return { loading, error, data, metro, city };
+  const { loading, error, data, city } = state.Category;
+  return { loading, error, data, city };
 };
 
 export default connect(mapStateToProps, {
   createPost,
   getCategory,
-  getMetro,
   getCity,
 })(PostForm);

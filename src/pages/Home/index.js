@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { loginUser } from "../../redux/actions";
-import { getMetro, getCity } from "../../redux/actions";
+import { getCity } from "../../redux/actions";
 import { connect } from "react-redux";
 import { Row, Container } from "reactstrap";
 import CategoryDropdown from "../../components/CategoryDropdownBtn/CategoryDropdown";
@@ -16,17 +16,19 @@ import BtnLoadMore from "../../components/BtnLoadMore";
 import ScrollToTop from "../../components/ScrollToTop";
 import DropDown from "../../components/Drodown";
 import AdsBtn from "../../components/AdsBtn";
+import ProductsConsumer from "../../contexts/favoritesContext";
 
 class Home extends Component {
   componentDidMount() {
     this.props.getCity();
-    this.props.getMetro();
   }
 
   render() {
     // console.log(qs.parse(this.props.history.location.search.replace('?','')));
     return (
-      <div>
+      <ProductsConsumer>
+        {(test) => (
+        <>
         <div className="header-bg d-none d-md-block">
           <img src={headerBg} alt="headerBg" className="header-bg__img" />
         </div>
@@ -44,12 +46,6 @@ class Home extends Component {
           </Row>
           <Row className="mx-0 mb-4">
             <DropDown
-              history={this.props.history}
-              metro={this.props.metro}
-              title="Метро"
-              type="metro"
-            />
-            <DropDown
               className="ml-3"
               history={this.props.history}
               metro={this.props.city}
@@ -58,13 +54,15 @@ class Home extends Component {
             />
           </Row>
           <Row className="mb-5 pb-2">
-            <ProductList {...this.props} />
+              <ProductList {...this.props} test={test}/>
           </Row>
           <ScrollToTop />
           <BtnLoadMore />
         </Container>
         <AdsBtn history={this.props.history} />
-      </div>
+        </>
+        )}
+      </ProductsConsumer>
     );
   }
 }
@@ -75,4 +73,4 @@ const mapStateToProps = (state) => {
   const { metro, loading, error, city } = state.Category;
   return { user, metro, loading, error, city };
 };
-export default connect(mapStateToProps, { loginUser, getMetro, getCity })(Home);
+export default connect(mapStateToProps, { loginUser, getCity })(Home);

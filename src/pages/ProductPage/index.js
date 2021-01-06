@@ -12,10 +12,10 @@ class ProductPage extends Component {
   }
   render() {
     return (
-      <ProductDetails
-        history={this.props.history}
-        id={this.props.match.params.id}
-      />
+        <ProductDetails
+          history={this.props.history}
+          id={this.props.match.params.id}
+        />
     );
   }
 }

@@ -15,15 +15,15 @@ class Register extends Component {
     const cookie = new Cookies();
 
     try {
+      let d = {...values, returnSecureToken: true};
       const { data } = await Axios.post(
-        `${API_URL}/auth/rest-auth/registration/`,
-        values
+        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCVONmsfMZcL0W3YFQ_mJAWCbr1Dv1qaaM`,
+        d
       );
-      cookie.set("user", JSON.stringify({ token: data.key }));
+      cookie.set("user", JSON.stringify({ token: data.idToken }));
       this.props.history.push("/");
     } catch (e) {
-      // console.warn("API_ERR", e.response.data);
-      this.setState({ err: e.response });
+      this.setState({ err: {...e} });
     }
   };
   render() {
@@ -41,15 +41,13 @@ class Register extends Component {
                 style={{ boxShadow: "-5px 9px 22px -2px #ddd4d4" }}
               >
                 <CardBody>
-                  {this.state?.err?.data?.non_field_errors ||
-                    (this.state?.err?.data?.username && (
+                  {this.state?.err?.response?.data.error &&
                       <Alert color="danger">
-                        {this.state?.err?.data?.non_field_errors ||
-                          this.state?.err?.data?.username}
+                        {this.state.err.response.data.error.message}
                       </Alert>
-                    ))}
+                    }
                   <AvForm onValidSubmit={this.handleValidSubmit}>
-                    <AvField
+                    {/* <AvField
                       name="username"
                       label="Введите Имя Пользователя"
                       type="text"
@@ -57,7 +55,7 @@ class Register extends Component {
                         required: { value: true },
                         pattern: { value: "^[A-Za-z0-9]+$", errorMessage: "" },
                       }}
-                    />
+                    /> */}
 
                     <AvField
                       name="email"
@@ -70,7 +68,7 @@ class Register extends Component {
                     />
 
                     <AvField
-                      name="password1"
+                      name="password"
                       label="Придумайте пароль"
                       type="text"
                       // validate={{ password: true }}
@@ -92,7 +90,7 @@ class Register extends Component {
                       }}
                     />
 
-                    <AvField
+                    {/* <AvField
                       name="password2"
                       type="text"
                       label="Повторите пароль"
@@ -103,7 +101,7 @@ class Register extends Component {
                         maxLength: { value: 16 },
                         match: { value: "password1" },
                       }}
-                    />
+                    /> */}
                     <Button className="w-100" color="info">
                       Зарегистрироватся
                     </Button>

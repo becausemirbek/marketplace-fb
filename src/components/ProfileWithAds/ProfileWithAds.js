@@ -1,14 +1,19 @@
 import React, { Component } from "react";
 import { Row, Col, Container } from "reactstrap";
 import { connect } from "react-redux";
-import { getProfileAds } from "../../redux/actions";
+import { getUserPosts } from "../../redux/actions";
 
 import "./ProfileWithAds.css";
 import { Link } from "react-router-dom";
 import ProductList from "../ProductList";
+import ProductsItem from "../ProductsItem/ProductsItem";
 
 class ProfileWithAds extends Component {
+  componentDidMount() {
+    this.props.getUserPosts()
+  }
   render() {
+    this.props.myPosts ? console.log(this.props.myPosts) : console.log("Empty")
     return (
       <Container>
         <Row className="profile-page border-top border-bottom mt-5">
@@ -67,8 +72,21 @@ class ProfileWithAds extends Component {
                 </div>
               </div> */}
           </Col>
-
-          <ProductList isMyPost {...this.props} />
+          {this.props.myPosts ? this.props.myPosts.map((item) => (
+            <ProductsItem
+              history={this.props.history}
+              slug={item.slug}
+              id={item.id}
+              key={item.id}
+              title={item.title}
+              image1={item.image1}
+              image2={item.image2}
+              price={item.price}
+              city={item.city}
+              publish={item.publish}
+              isMyPost={this.props.myPosts}
+            />
+        )) : <div>Loading...</div>}
         </Row>
       </Container>
     );
@@ -80,5 +98,5 @@ const mapStateToProps = (state) => {
   return { myPosts, loading, error };
 };
 
-export default connect(mapStateToProps, { getProfileAds })(ProfileWithAds);
+export default connect(mapStateToProps, { getUserPosts })(ProfileWithAds);
 // export default ProfileWithAds;

@@ -11,9 +11,6 @@ import {
   LOAD_MORE,
   LOAD_MORE_SUCCESS,
   LOAD_MORE_FAILED,
-  LIVE_SEARCH,
-  LIVE_SEARCH_SUCCESS,
-  LIVE_SEARCH_FAILED,
   UPDATE_POST,
   // GET_POST,
   // POST_RECEIVED,
@@ -22,14 +19,8 @@ import {
   CREATE_POST_SUCCESS,
   CREATE_POST_FAILED,
   DELETE_POST,
-  GET_PROFILE_ADS,
-  GET_PROFILE_ADS_SUCCESS,
-  GET_PROFILE_ADS_FAILED,
   UPDATE_POST_SUCCESS,
   UPDATE_POST_FAILED,
-  GET_METRO_SUCCESS,
-  GET_METRO_FAILED,
-  GET_METRO,
   GET_CITY,
   GET_CITY_SUCCESS,
   GET_CITY_FAILED,
@@ -48,6 +39,13 @@ import {
   GET_EDUCATION,
   GET_EDUCATION_SUCCESS,
   GET_EDUCATION_FAILED,
+  GET_USER_POSTS,
+  GET_USER_POSTS_SUCCESS,
+  GET_USER_POSTS_FAILED,
+  SET_FAVORITES,
+  REMOVE_FAVORITES,
+  SET_FAVORITES_SUCCESS,
+  SET_FAVORITE
 } from "./constants";
 
 export const getCategory = () => ({
@@ -111,36 +109,6 @@ export const loadMoreFailed = (err) => ({
   payload: err,
 });
 
-export const getProfileAds = () => ({
-  type: GET_PROFILE_ADS,
-});
-
-export const getProfileAdsSuccess = (data) => ({
-  type: GET_PROFILE_ADS_SUCCESS,
-  payload: data,
-});
-
-export const getProfileAdsFailed = (err) => ({
-  type: GET_PROFILE_ADS_FAILED,
-  payload: err,
-});
-
-//-------search-------
-export const liveSearch = (title) => ({
-  type: LIVE_SEARCH,
-  payload: { title },
-});
-
-export const liveSearchSuccess = (data) => ({
-  type: LIVE_SEARCH_SUCCESS,
-  payload: data,
-});
-
-export const liveSearchFailed = (err) => ({
-  type: LIVE_SEARCH_FAILED,
-  payload: err,
-});
-
 // -----CRUD-----
 
 // export const getPost = () => ({
@@ -178,7 +146,7 @@ export const deletePost = (id) => ({
   payload: id,
 });
 
-export const updatePost = ({ data, id }) => ({
+export const updatePost = (data, id) => ({
   type: UPDATE_POST,
   payload: { data, id },
 });
@@ -192,21 +160,19 @@ export const updatePostFailed = (err) => ({
   payload: err,
 });
 
-//----actions для метро----
+export const getUserPosts = () => ({
+  type: GET_USER_POSTS
+})
 
-export const getMetro = () => ({
-  type: GET_METRO,
-});
+export const getUserPostsSuccess = (data) => ({
+  type: GET_USER_POSTS_SUCCESS,
+  payload: data
+})
 
-export const getMetroSuccess = (metro) => ({
-  type: GET_METRO_SUCCESS,
-  payload: metro,
-});
-
-export const getMetroFailed = (err) => ({
-  type: GET_METRO_FAILED,
-  payload: err,
-});
+export const getUserPostsFailed = (err) => ({
+  type: GET_USER_POSTS_FAILED,
+  payload: err
+})
 
 // ----actions для городов----
 

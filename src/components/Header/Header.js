@@ -9,8 +9,6 @@ import { isUserAuthenticated } from "../../helpers/authUtils";
 import BurgerMenu from "../BurgerMenu";
 import UserDropdown from "../UserDropdownMenu";
 import SearchInput from "../SearchInput";
-import { getMetro } from "../../redux/actions";
-import MetroDrop from "../MetroDropdown";
 import qs from "qs";
 
 class Header extends Component {
@@ -18,9 +16,9 @@ class Header extends Component {
     result: "",
   };
 
-  componentDidMount() {
-    this.props.getMetro();
-  }
+  // componentDidMount() {
+  //   this.props.getMetro();
+  // }
   render() {
     return (
       <>
@@ -31,8 +29,7 @@ class Header extends Component {
                 <Link to="/" className="nav-menu__item">
                   Выбрать регион
                 </Link>
-                <MetroDrop metro={this.props.metro} />
-                {/* <Link to="/" className="nav-menu__item">Выбрать метро</Link> */}
+                {/* <MetroDrop metro={this.props.metro} /> */}
               </div>
 
               {isUserAuthenticated() ? (
@@ -129,4 +126,4 @@ const mapStateToProps = (state) => {
   return { metro, loading, error };
 };
 
-export default connect(mapStateToProps, { getMetro })(Header);
+export default connect(mapStateToProps)(Header);

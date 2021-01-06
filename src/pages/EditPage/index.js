@@ -8,18 +8,16 @@ import {
   Button,
 } from "reactstrap";
 import { connect } from "react-redux";
-import { getAdsDetails, updatePost, deletePost } from "../../redux/actions";
+import { getAdsDetails, updatePost, deletePost, getCategory, getCity } from "../../redux/actions";
 
 import { AvForm, AvGroup, AvInput } from "availity-reactstrap-validation";
 import { getLoggedInUser } from "../../helpers/authUtils";
 import { Cascader } from "antd";
 import "antd/dist/antd.css";
+import Loading from "../../components/Loading";
+import CityDropdown from "../../components/CityDrop";
 
 class PostForm extends Component {
-  componentDidMount() {
-    console.log(this.props);
-    this.props.getAdsDetails(this.props.match.params.id);
-  }
   constructor(props) {
     super(props);
     const user = getLoggedInUser();
@@ -30,7 +28,14 @@ class PostForm extends Component {
     this.state = {
       pass_images: [],
       category: null,
+      city: null
     };
+  }
+
+  componentDidMount() {
+    this.props.getAdsDetails(this.props.match.params.id);
+    this.props.getCategory();
+    this.props.getCity()
   }
 
   handleFileDrop = (e) => {
@@ -51,45 +56,40 @@ class PostForm extends Component {
   // };
 
   handleValidSubmit = (event, values) => {
-    delete values.pass_images;
-    let formData = new FormData();
-    this.state.pass_images.forEach((item) => {
-      formData.append("images", item);
-    });
-    for (const key in values) {
-      formData.append(key, values[key]);
-    }
-    if (this.state.category)
-      formData.append("category", this.state.category.id);
-    this.props.updatePost({ data: formData, id: this.props.match.params.id });
-    // this.props.history.push('/post-create-success')
+    const {token} = getLoggedInUser()
+    const val = {...values, category: this.state.category.title, city: this.state.city, user: token }
+    this.props.updatePost(val, values.slug);
   };
   render() {
+    const { ads } = this.props
     const convertCatToOpt = (data) =>
-      data.map((item) => ({
+      data && data.map((item) => ({
         label: item.title,
         value: item,
         children: convertCatToOpt(item.children),
       }));
-    const options = convertCatToOpt(this.props.data);
+    const options = convertCatToOpt(this.props.data && this.props.data);
     const del = (id) => this.props.deletePost(id);
     return (
       <Container>
+        {ads ?
         <Row className="mb-5">
           <AvForm onValidSubmit={this.handleValidSubmit}>
             <AvGroup>
               <Label for="exampleEmail">Название товара</Label>
-              <AvInput id="exampleEmail" name="title" />
+              <AvInput value={ads.title} id="exampleEmail" name="title" />
               <FormFeedback></FormFeedback>
               <FormText></FormText>
             </AvGroup>
-            {/* <AvGroup>
+            <AvGroup>
               <Label for="exampleText">Описание товара</Label>
-              <AvInput name="description" type="textarea" id="exampleText" />
+              <AvInput value={ads.description} name="description" type="textarea" id="exampleText" />
             </AvGroup>
             <AvGroup>
               <Cascader
-                onChange={(item) => this.setState({ category: item[0] })}>
+                onChange={(item) => this.setState({ category: item[0] })}
+                options={options}
+                >
                 <Button
                   className="mb-3"
                   style={{ boxShadow: "none" }}>
@@ -98,8 +98,17 @@ class PostForm extends Component {
               </Cascader>
             </AvGroup>
             <AvGroup>
+              <CityDropdown
+                cityTitle={this.state.city}
+                city={this.props?.city}
+                onClick={(id) => this.setState({city: this.props.city?.[id].title})}
+                history={this.props.history}
+              />
+            </AvGroup>
+            <AvGroup>
               <Label for="exampleNumber">Цена</Label>
               <AvInput
+                value={ads.price}
                 type="number"
                 name="price"
                 id="exampleNumber"
@@ -107,23 +116,33 @@ class PostForm extends Component {
               />
             </AvGroup>
             <AvGroup>
-              <Label for="phone_number">Номер Телефона</Label>
+              <Label for="phoneNumber">Номер Телефона</Label>
               <AvInput 
-                name="phone_number" 
+                value={ads.phoneNumber}
+                name="phoneNumber" 
                 type="number" 
                 id="phone_number" 
                 placeholder="Номер телефона"/>
             </AvGroup>
-            <AvGroup>
-              <Label for="pass_images">Добавить картинку</Label>
+            <AvGroup style={{display: "none"}}>
+              <Label for="slug">Номер Телефона</Label>
+              <AvInput 
+                value={ads.slug}
+                name="slug" 
+                type="text" 
+                id="slug" 
+                />
+            </AvGroup>
+            {/* <AvGroup>
+              {/* <Label for="pass_images">Добавить картинку</Label>
               <AvInput
                 onChange={this.handleFileDrop}
                 type="file"
                 name="pass_images"
                 id="pass_images"
                 multiple
-              />
-              <FormText color="muted"></FormText>
+              /> */}
+              {/* <FormText color="muted"></FormText>
             </AvGroup> */}
             <Button type="submit" color="info">
               Опубликовать
@@ -131,7 +150,7 @@ class PostForm extends Component {
             <Button
               type="button"
               onClick={() => {
-                del(this.props.ads.id);
+                del(this.props.ads.slug);
                 this.props.history.push("/");
               }}
               className="ml-2"
@@ -140,19 +159,22 @@ class PostForm extends Component {
               Удалить
             </Button>
           </AvForm>
-        </Row>
+        </Row> : <Loading />
+        }
       </Container>
     );
   }
 }
 
 const mapStateToProps = (state) => {
-  const { loading, error, ads, data } = state.Category;
-  return { loading, error, ads, data };
+  const { loading, error, ads, data, city } = state.Category;
+  return { loading, error, ads, data, city };
 };
 
 export default connect(mapStateToProps, {
   updatePost,
   getAdsDetails,
   deletePost,
+  getCategory,
+  getCity
 })(PostForm);

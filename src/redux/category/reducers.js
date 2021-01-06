@@ -21,15 +21,9 @@ import {
   CREATE_POST,
   CREATE_POST_SUCCESS,
   CREATE_POST_FAILED,
-  GET_PROFILE_ADS,
-  GET_PROFILE_ADS_SUCCESS,
-  GET_PROFILE_ADS_FAILED,
   UPDATE_POST,
   UPDATE_POST_SUCCESS,
   UPDATE_POST_FAILED,
-  GET_METRO_SUCCESS,
-  GET_METRO,
-  GET_METRO_FAILED,
   GET_CITY,
   GET_CITY_SUCCESS,
   GET_CITY_FAILED,
@@ -48,6 +42,11 @@ import {
   GET_EDUCATION,
   GET_EDUCATION_SUCCESS,
   GET_EDUCATION_FAILED,
+  GET_USER_POSTS,
+  GET_USER_POSTS_SUCCESS,
+  GET_SEARCHED_POSTS_FAILED,
+  SET_FAVORITES,
+  SET_FAVORITE,
 } from "./constants";
 
 const INIT_STATE = {
@@ -60,11 +59,11 @@ const INIT_STATE = {
   postTitle: [],
   ads: null,
   next: null,
-  metro: [],
   city: [],
   resume: [],
   resumeDetails: [],
   education: [],
+  favorites: []
 };
 
 const Category = (state = INIT_STATE, action) => {
@@ -130,11 +129,11 @@ const Category = (state = INIT_STATE, action) => {
       return { ...state, loading: false };
     case CREATE_POST_FAILED:
       return { ...state, error: action.payload, loading: false };
-    case GET_PROFILE_ADS:
+    case GET_USER_POSTS:
       return { ...state, loading: true };
-    case GET_PROFILE_ADS_SUCCESS:
+    case GET_USER_POSTS_SUCCESS:
       return { ...state, myPosts: action.payload, loading: false };
-    case GET_PROFILE_ADS_FAILED:
+    case GET_SEARCHED_POSTS_FAILED:
       return { ...state, error: action.payload, loading: false };
     case UPDATE_POST:
       return { ...state, loading: true };
@@ -142,12 +141,6 @@ const Category = (state = INIT_STATE, action) => {
       return { ...state, loading: false };
     case UPDATE_POST_FAILED:
       return { ...state, loading: false, error: action.payload };
-    case GET_METRO:
-      return { ...state, loading: true };
-    case GET_METRO_SUCCESS:
-      return { ...state, metro: action.payload, loading: false };
-    case GET_METRO_FAILED:
-      return { ...state, error: action.payload, loading: false };
     case GET_CITY:
       return { ...state, loading: true };
     case GET_CITY_SUCCESS:

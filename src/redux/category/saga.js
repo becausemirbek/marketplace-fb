@@ -21,6 +21,7 @@ import {
   GET_RESUME_DETAILS,
   CREATE_EDUCATION_INFO,
   GET_EDUCATION,
+  GET_USER_POSTS
 } from "./constants";
 
 import {
@@ -30,21 +31,15 @@ import {
   getAdsDetailsSuccess,
   loadMoreSuccess,
   loadMoreFailed,
-  // liveSearchSuccess,
-  // liveSearchFailed,
   createPostFailed,
   createPostSuccess,
   getProfileAdsFailed,
   getProfileAdsSuccess,
   updatePostSuccess,
   updatePostFailed,
-  getMetroSuccess,
-  getMetroFailed,
   getCitySuccess,
   getCityFailed,
   getPosts,
-  liveSearchSuccess,
-  liveSearchFailed,
   createResumeSuccess,
   createResumeFailed,
   getResumeSuccess,
@@ -55,13 +50,20 @@ import {
   createEducationInfoFailed,
   getEducationSuccess,
   getEducationFailed,
+  getUserPostsSuccess,
+  getUserPostsFailed,
 } from "./actions";
 import { getLoggedInUser } from "../../helpers/authUtils";
+import { RestorePageSharp } from "@material-ui/icons";
 
 function* getCategory() {
+  const category = [];
   try {
-    const { data } = yield call(axios, `${API_URL}/api/v1/category/`);
-    yield put(getCategorySuccess(data.results));
+    const { data } = yield call(axios, `${API_URL}/category.json`);
+    for(let item in data) {
+      category.push(data[item])
+    }
+    yield put(getCategorySuccess(category));
   } catch (e) {
     yield put(getCategoryFailed(e.message));
   }
@@ -78,15 +80,19 @@ function* _getPosts() {
   }
 }
 
-function* getProfileAds() {
-  const user = getLoggedInUser();
+
+function* _getUserPosts() {
+  const {token} = getLoggedInUser();
+  const newData = []
   try {
-    const { data } = yield call(axios, `${API_URL}/api/v1/postauthor/`, {
-      headers: { Authorization: "Token " + user.token },
-    });
-    yield put(getProfileAdsSuccess(data));
+    const { data } = yield call(axios, `${API_URL}/products.json`);
+    for(let item in data && data){
+      newData.push(data[item])
+  }
+  const userPosts = newData.filter(item => item?.user == token)
+    yield put(getUserPostsSuccess(userPosts));
   } catch (e) {
-    yield put(getProfileAdsFailed(e.message));
+    yield put(getUserPostsFailed(e.message));
   }
 }
 
@@ -124,20 +130,19 @@ function* createPost({ payload }) {
 }
 
 function* updatePost({ payload: { data, id } }) {
-  const user = getLoggedInUser();
-  // console.log(Array.from(data.keys()), data.get("title"), id);
+  const test = getLoggedInUser();
   try {
-    let resp = yield call(axios, `${API_URL}/api/v1/post/${id}/update/`, data, {
-      method: "PATCH",
+    let resp = yield call(axios.patch, 
+      `${API_URL}/products/${id}.json`, 
+      data, 
+      {
       headers: {
-        Authorization: "Token " + user.token,
-        "content-type": "multipart/form-data",
-      },
+        "content-type": "Application/json",
+      }
     });
-    // console.log(resp.data, user.token);
+    console.log(resp, id, "slig")
     yield put(updatePostSuccess("Success"));
   } catch (e) {
-    // console.log(e);
     yield put(updatePostFailed(e.message));
   }
 }
@@ -145,9 +150,7 @@ function* updatePost({ payload: { data, id } }) {
 function* deletePost({ payload }) {
   const user = getLoggedInUser();
   try {
-    yield call(axios.delete, `${API_URL}/api/v1/post/${payload}/delete/`, {
-      headers: { Authorization: "Token " + user.token },
-    });
+    yield call(axios.delete, `${API_URL}/products/${payload}/.json`);
     yield put(getPosts(""));
   } catch (e) {}
 }
@@ -164,9 +167,9 @@ function* deletePost({ payload }) {
 function* _getAdsDetails({ payload }) {
   const test = [];
   try {
-    const { data } = yield call(axios, `https://kaeda-test-default-rtdb.firebaseio.com/products.json`);
+    const { data } = yield call(axios, `${API_URL}/products.json`);
     for(let item in data && data){
-        test.push(data[item])
+        test.push({...data[item], slug: item})
     }
     const itemDetails = test.filter(item => item.id == payload)
     yield put(getAdsDetailsSuccess(itemDetails[0]));
@@ -175,33 +178,17 @@ function* _getAdsDetails({ payload }) {
   }
 }
 
-function* getMetro() {
-  try {
-    const { data } = yield call(axios, `${API_URL}/api/v1/metro/`);
-    yield put(getMetroSuccess(data.results));
-  } catch (e) {
-    yield put(getMetroFailed(e.message));
-  }
-}
 
 function* getCity() {
+  const city = [];
   try {
-    const { data } = yield call(axios, `${API_URL}/api/v1/city/`);
-    yield put(getCitySuccess(data.results));
+    const { data } = yield call(axios, `${API_URL}/city.json`);
+    for(let item in data) {
+      city.push(data[item])
+    }
+    yield put(getCitySuccess(city));
   } catch (e) {
     yield put(getCityFailed(e.message));
-  }
-}
-
-function* getSearchResult({ payload: { title } }) {
-  try {
-    const { data } = yield call(
-      axios,
-      `${API_URL}/api/v1/post/title/?title=${title}&limit=10`
-    );
-    yield put(liveSearchSuccess(data.results));
-  } catch (e) {
-    yield put(liveSearchFailed(e.message));
   }
 }
 
@@ -335,24 +322,16 @@ export function* watchDeletePost() {
   yield takeEvery(DELETE_POST, deletePost);
 }
 
-export function* watchGetProfileAds() {
-  yield takeEvery(GET_PROFILE_ADS, getProfileAds);
+export function* watchGetUserPosts() {
+  yield takeEvery(GET_USER_POSTS, _getUserPosts);
 }
 
 export function* watchUpdatePost() {
   yield takeEvery(UPDATE_POST, updatePost);
 }
 
-export function* watchGetMetro() {
-  yield takeEvery(GET_METRO, getMetro);
-}
-
 export function* watchGetCity() {
   yield takeEvery(GET_CITY, getCity);
-}
-
-export function* watchGetSearchResult() {
-  yield takeEvery(LIVE_SEARCH, getSearchResult);
 }
 
 export function* watchCreateResume() {
@@ -374,6 +353,8 @@ export function* watchCreateEducation() {
 export function* watchGetEducation() {
   yield takeEvery(GET_EDUCATION, handleGetEducation);
 }
+
+
 function* categorySaga() {
   yield all([
     fork(watchGetCategory),
@@ -382,16 +363,14 @@ function* categorySaga() {
     fork(watchLoadMore),
     fork(watchCreatePost),
     fork(watchDeletePost),
-    fork(watchGetProfileAds),
+    fork(watchGetUserPosts),
     fork(watchUpdatePost),
-    fork(watchGetMetro),
     fork(watchGetCity),
-    fork(watchGetSearchResult),
     fork(watchCreateResume),
     fork(watchGetResume),
     fork(watchGetResumeDetails),
     fork(watchCreateEducation),
-    fork(watchGetEducation),
+    fork(watchGetEducation)
   ]);
 }
 
