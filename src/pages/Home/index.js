@@ -15,7 +15,6 @@ import ProductList from "../../components/ProductList";
 import BtnLoadMore from "../../components/BtnLoadMore";
 import ScrollToTop from "../../components/ScrollToTop";
 import DropDown from "../../components/Drodown";
-import AdsBtn from "../../components/AdsBtn";
 import ProductsConsumer from "../../contexts/favoritesContext";
 
 class Home extends Component {
@@ -59,7 +58,6 @@ class Home extends Component {
           <ScrollToTop />
           <BtnLoadMore />
         </Container>
-        <AdsBtn history={this.props.history} />
         </>
         )}
       </ProductsConsumer>

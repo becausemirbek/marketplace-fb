@@ -11,7 +11,7 @@ const UserDropdownMenu = (props) => {
   const toggle = () => setOpen(!dropdownOpen);
 
   return (
-    <ButtonDropdown isOpen={dropdownOpen} toggle={toggle}>
+    <ButtonDropdown className="mt-1" style={{maxWidth: "190px", minWidth: "90px"}} isOpen={dropdownOpen} toggle={toggle}>
       <DropdownToggle color="white px-0" style={{boxShadow: 'none'}}>
         <img src={UserIcon} alt="userIcon" />
       </DropdownToggle>
